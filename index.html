@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cromakerfilms — Producción Audiovisual</title>
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --bg-alt:#111111;
+    --card:#161616;
+    --line:rgba(255,255,255,.09);
+    --text:#f2f0ec;
+    --text-dim:#9a9790;
+    --accent:#c94b2c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{
+    font-family:Georgia,'Times New Roman',serif;
+    font-weight:400;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  section{padding:120px 0;}
+
+  /* HEADER */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 40px;
+    background:linear-gradient(to bottom, rgba(10,10,10,.85), transparent);
+  }
+  header.scrolled{background:rgba(10,10,10,.92);border-bottom:1px solid var(--line);}
+  .logo{font-family:Georgia,serif;font-size:20px;letter-spacing:.06em;text-transform:uppercase;}
+  nav{display:flex;gap:34px;font-size:13px;letter-spacing:.05em;text-transform:uppercase;}
+  nav a{opacity:.8;transition:opacity .2s;}
+  nav a:hover{opacity:1;}
+  .btn{
+    display:inline-block;
+    padding:11px 26px;
+    border:1px solid var(--text);
+    border-radius:2px;
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    transition:background .25s, color .25s;
+  }
+  .btn:hover{background:var(--text);color:var(--bg);}
+  .navbtn{display:none;}
+  @media(min-width:760px){.navbtn{display:inline-block;}}
+  .menu-toggle{display:none;background:none;border:none;color:var(--text);font-size:26px;cursor:pointer;}
+  @media(max-width:760px){
+    nav{display:none;}
+    .menu-toggle{display:block;}
+  }
+
+  /* HERO */
+  .hero{
+    position:relative;
+    height:100vh;
+    min-height:640px;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+  }
+  .hero video, .hero .video-fallback{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+  }
+  .hero::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(to top, rgba(10,10,10,1) 5%, rgba(10,10,10,.55) 45%, rgba(10,10,10,.25) 100%);
+    z-index:1;
+  }
+  .hero-content{position:relative;z-index:2;padding:0 40px 90px;max-width:800px;}
+  .eyebrow{
+    font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(40px,7vw,84px);
+    line-height:1.02;
+    margin-bottom:26px;
+  }
+  .hero p{
+    color:var(--text-dim);
+    font-size:16px;
+    max-width:520px;
+    margin-bottom:34px;
+  }
+  .hero-ctas{display:flex;gap:16px;flex-wrap:wrap;}
+  .btn-solid{
+    background:var(--text);color:var(--bg);
+    padding:14px 30px;border-radius:2px;
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    border:1px solid var(--text);
+  }
+  .btn-outline{
+    padding:14px 30px;border-radius:2px;border:1px solid rgba(255,255,255,.4);
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  }
+
+  /* SECTION HEADERS */
+  .sec-head{max-width:640px;margin-bottom:60px;}
+  .sec-head .eyebrow{color:var(--accent);}
+  .sec-head h2{font-size:clamp(28px,4vw,42px);margin-bottom:14px;}
+  .sec-head p{color:var(--text-dim);font-size:16px;max-width:520px;}
+
+  /* PORTFOLIO */
+  #portafolio{background:var(--bg-alt);}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px;}
+  .filter{
+    padding:8px 18px;border:1px solid var(--line);border-radius:20px;
+    font-size:12px;letter-spacing:.03em;color:var(--text-dim);cursor:pointer;
+    transition:all .2s;background:transparent;
+  }
+  .filter.active, .filter:hover{border-color:var(--text);color:var(--text);}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.grid{grid-template-columns:1fr;}}
+  .card{position:relative;overflow:hidden;border-radius:4px;aspect-ratio:4/5;background:#000;}
+  .card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+  .card:hover img{transform:scale(1.06);}
+  .card-overlay{
+    position:absolute;inset:0;
+    background:linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,0) 55%);
+    display:flex;flex-direction:column;justify-content:flex-end;padding:20px;
+  }
+  .card-tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+  .card-title{font-family:Georgia,serif;font-size:18px;}
+  .more{text-align:center;margin-top:56px;}
+
+  /* SERVICES */
+  .services-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);
+  }
+  @media(max-width:900px){.services-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.services-grid{grid-template-columns:1fr;}}
+  .service{background:var(--bg);padding:40px 34px;position:relative;overflow:hidden;}
+  .service-icon{width:100%;height:150px;overflow:hidden;border-radius:3px;margin-bottom:26px;}
+  .service-icon img{width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.85);}
+  .service-eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px;}
+  .service h3{font-size:21px;margin-bottom:12px;}
+  .service p{color:var(--text-dim);font-size:14.5px;}
+
+  /* STUDIO */
+  #nosotros{background:var(--bg-alt);}
+  .studio-layout{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start;}
+  @media(max-width:860px){.studio-layout{grid-template-columns:1fr;}}
+  .studio-item{padding:28px 0;border-top:1px solid var(--line);}
+  .studio-item:first-child{border-top:none;padding-top:0;}
+  .studio-item h4{font-family:Georgia,serif;font-size:19px;margin-bottom:10px;}
+  .studio-item p{color:var(--text-dim);font-size:14.5px;}
+  .studio-media{position:relative;border-radius:4px;overflow:hidden;}
+  .studio-media video, .studio-media img{width:100%;height:100%;object-fit:cover;}
+  .thumb-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+  .thumb-strip img{aspect-ratio:1;object-fit:cover;border-radius:3px;opacity:.75;}
+
+  /* CONTACT */
+  #contacto{text-align:center;}
+  #contacto .sec-head{margin:0 auto 46px;text-align:center;}
+  #contacto .sec-head p{margin:0 auto;}
+  .contact-ctas{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:20px;}
+  .email-line{color:var(--text-dim);font-size:14px;}
+  .email-line a{border-bottom:1px solid var(--line);}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:50px 0 34px;
+    background:var(--bg-alt);
+  }
+  .foot-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:24px;margin-bottom:40px;}
+  .foot-social{display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--text-dim);}
+  .foot-social a:hover{color:var(--text);}
+  .foot-links{display:flex;gap:26px;font-size:13px;color:var(--text-dim);}
+  .foot-bottom{border-top:1px solid var(--line);padding-top:22px;font-size:12px;color:var(--text-dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+
+  .whatsapp-fab{
+    position:fixed;bottom:26px;right:26px;z-index:90;
+    width:54px;height:54px;border-radius:50%;
+    background:#25D366;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 18px rgba(0,0,0,.4);
+  }
+  .whatsapp-fab svg{width:26px;height:26px;fill:#fff;}
+</style>
+</head>
+<body>
+
+<header id="header">
+  <a href="#" class="logo">Cromakerfilms</a>
+  <nav>
+    <a href="#nosotros">El Estudio</a>
+    <a href="#portafolio">Portafolio</a>
+    <a href="#zonasegura">Zona Segura</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+  <a href="#contacto" class="btn navbtn">Trabajemos juntos</a>
+  <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button>
+</header>
+
+<section class="hero" id="inicio">
+  <video autoplay muted loop playsinline poster="https://www.cromakerfilms.com/Supercines-IMAX-Bivi.jpg">
+    <source src="https://player.vimeo.com/progressive_redirect/playback/736659154/rendition/540p" type="video/mp4">
+  </video>
+  <div class="hero-content">
+    <div class="eyebrow">Producción Audiovisual · Guayaquil, Ecuador</div>
+    <h1>Tu contenido a otro nivel.</h1>
+    <p>Creamos contenido audiovisual para marcas, emprendedores, artistas e instituciones que quieren destacar con una imagen profesional, creativa y memorable.</p>
+    <div class="hero-ctas">
+      <a href="#portafolio" class="btn-solid">Ver Portafolio</a>
+      <a href="#contacto" class="btn-outline">Hablemos</a>
+    </div>
+  </div>
+</section>
+
+<section id="portafolio">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Nuestro trabajo</div>
+      <h2>Nuestro trabajo habla por nosotros.</h2>
+      <p>Una selección de nuestros proyectos más recientes.</p>
+    </div>
+
+    <div class="filters">
+      <button class="filter active" data-f="todos">Todos</button>
+      <button class="filter" data-f="spots">Spots</button>
+      <button class="filter" data-f="reels">Reels</button>
+      <button class="filter" data-f="ia">IA</button>
+      <button class="filter" data-f="eventos">Eventos</button>
+      <button class="filter" data-f="politica">Política</button>
+      <button class="filter" data-f="cortometrajes">Cortometrajes</button>
+      <button class="filter" data-f="musicales">Musicales</button>
+      <button class="filter" data-f="medicos">Médicos</button>
+      <button class="filter" data-f="institucionales">Institucionales</button>
+    </div>
+
+    <div class="grid" id="portGrid">
+      <div class="card" data-cat="spots"><img src="https://www.cromakerfilms.com/Supercines-IMAX-Bivi.jpg" alt="Supercines x BiVi"><div class="card-overlay"><div class="card-tag">Spot</div><div class="card-title">Supercines x BiVi</div></div></div>
+      <div class="card" data-cat="reels spots"><img src="https://www.cromakerfilms.com/Campeona Carls.jpg" alt="Campeona Carls"><div class="card-overlay"><div class="card-tag">Reels · Spots</div><div class="card-title">Campeona Carls</div></div></div>
+      <div class="card" data-cat="medicos reels"><img src="https://www.cromakerfilms.com/Guias-dentales.jpg" alt="Aparatos de Ortopedia"><div class="card-overlay"><div class="card-tag">Médicos · Reels</div><div class="card-title">Aparatos de Ortopedia</div></div></div>
+      <div class="card" data-cat="reels"><img src="https://www.cromakerfilms.com/Karla-Devils.jpg" alt="Devil Wears Prada Trend"><div class="card-overlay"><div class="card-tag">Reels</div><div class="card-title">Devil Wears Prada Trend</div></div></div>
+      <div class="card" data-cat="ia reels"><img src="https://www.cromakerfilms.com/LLegar a marte portada.jpg" alt="Llegar a Marte"><div class="card-overlay"><div class="card-tag">IA · Reels</div><div class="card-title">Llegar a Marte</div></div></div>
+      <div class="card" data-cat="cortometrajes"><img src="https://www.cromakerfilms.com/Corazon-de-madre.jpg" alt="Corazón de Madre"><div class="card-overlay"><div class="card-tag">Cortometraje</div><div class="card-title">Corazón de Madre</div></div></div>
+      <div class="card" data-cat="cortometrajes"><img src="https://www.cromakerfilms.com/iAlone-portada.jpg" alt="iAlone"><div class="card-overlay"><div class="card-tag">Cortometraje</div><div class="card-title">iAlone</div></div></div>
+      <div class="card" data-cat="institucionales"><img src="https://www.cromakerfilms.com/MarcSol-Portada.jpg" alt="Distribuidora Marc Sol"><div class="card-overlay"><div class="card-tag">Institucional</div><div class="card-title">Distribuidora Marc Sol</div></div></div>
+      <div class="card" data-cat="musicales"><img src="https://www.cromakerfilms.com/3ra-Newton-Portada.jpg" alt="3ra Newton"><div class="card-overlay"><div class="card-tag">Musical</div><div class="card-title">J Malack — La 3ra de Newton</div></div></div>
+      <div class="card" data-cat="cortometrajes"><img src="https://www.cromakerfilms.com/Portada-Perdoname.jpg" alt="Perdóname"><div class="card-overlay"><div class="card-tag">Cortometraje</div><div class="card-title">Perdóname</div></div></div>
+      <div class="card" data-cat="reels"><img src="https://www.cromakerfilms.com/KAO-Clinic.jpg" alt="KAO Clinic"><div class="card-overlay"><div class="card-tag">Reels</div><div class="card-title">KAO Clinic — Diferentes rostros</div></div></div>
+      <div class="card" data-cat="ia reels"><img src="https://www.cromakerfilms.com/Wishlist-KAO.jpg" alt="Wishlist Navidad KAO"><div class="card-overlay"><div class="card-tag">IA · Reels</div><div class="card-title">Wishlist Navidad — KAO Clinic</div></div></div>
+      <div class="card" data-cat="reels spots"><img src="https://www.cromakerfilms.com/Bivi-iHop-Portada.jpg" alt="BiVi x iHop"><div class="card-overlay"><div class="card-tag">Reels · Spots</div><div class="card-title">BiVi x iHop</div></div></div>
+    </div>
+
+    <div class="more"><a href="#" class="btn">Ver portafolio completo</a></div>
+  </div>
+</section>
+
+<section id="servicios">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Lo que hacemos</div>
+      <h2>Nuestros Servicios.</h2>
+    </div>
+  </div>
+  <div class="services-grid">
+    <div class="service">
+      <div class="service-icon"><img src="https://www.cromakerfilms.com/srv-social.jpg" alt="Social Media"></div>
+      <div class="service-eyebrow">Contenido para Redes Sociales</div>
+      <h3>Haz que te recuerden, no que te deslicen.</h3>
+      <p>Creamos contenido diseñado para captar atención, generar interacción y mantener tu marca presente en la mente de tu audiencia.</p>
+    </div>
+    <div class="service">
+      <div class="service-icon"><img src="https://www.cromakerfilms.com/srv-spots.jpg" alt="Publicidad"></div>
+      <div class="service-eyebrow">Publicidad</div>
+      <h3>Convierte miradas en interés.</h3>
+      <p>Desarrollamos spots publicitarios que presentan tu producto o servicio de forma profesional, atractiva y memorable.</p>
+    </div>
+    <div class="service">
+      <div class="service-icon"><img src="https://www.cromakerfilms.com/srv-musical.jpg" alt="Videoclips"></div>
+      <div class="service-eyebrow">Videoclips</div>
+      <h3>Tu música merece una producción a la altura.</h3>
+      <p>Desarrollamos videoclips con identidad visual, narrativa y una estética que potencia el mensaje del artista.</p>
+    </div>
+    <div class="service">
+      <div class="service-icon"><img src="https://www.cromakerfilms.com/srv-ia.jpg" alt="Inteligencia Artificial"></div>
+      <div class="service-eyebrow">Inteligencia Artificial</div>
+      <h3>Creatividad sin límites.</h3>
+      <p>Usamos IA para crear contenido visualmente extraordinario: imágenes, videos y efectos que antes eran imposibles.</p>
+    </div>
+    <div class="service">
+      <div class="service-icon"><img src="https://www.cromakerfilms.com/srv-produccion.jpg" alt="Producción Audiovisual"></div>
+      <div class="service-eyebrow">Producción Audiovisual</div>
+      <h3>Tú traes la idea. Nosotros la hacemos realidad.</h3>
+      <p>Nos encargamos de la planificación, producción y postproducción para convertir conceptos en piezas audiovisuales de alto impacto.</p>
+    </div>
+    <div class="service">
+      <div class="service-icon"><img src="https://www.cromakerfilms.com/srv-eventos.jpg" alt="Eventos"></div>
+      <div class="service-eyebrow">Eventos</div>
+      <h3>Capturamos momentos que merecen ser recordados.</h3>
+      <p>Registramos cada detalle para transformar tu evento en contenido de alto valor.</p>
+    </div>
+  </div>
+</section>
+
+<section id="nosotros">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">El Estudio</div>
+      <h2>Hacemos lo que amamos. Y se nota.</h2>
+    </div>
+    <div class="studio-layout">
+      <div>
+        <div class="studio-item">
+          <h4>Calidad en cada detalle</h4>
+          <p>Iluminación de cine, edición de alto nivel y atención al detalle en cada cuadro. No entregamos solo un video — entregamos una pieza que representa a tu marca con orgullo. Desde el encuadre hasta el color final, cada decisión tiene un propósito.</p>
+        </div>
+        <div class="studio-item">
+          <h4>La IA ya no tiene límites</h4>
+          <p>Integramos inteligencia artificial en cada etapa creativa: efectos visuales, imágenes sintéticas, ideas que antes eran imposibles o requerían presupuestos millonarios. Hoy, la IA nos permite llevar cualquier visión a la realidad — sin importar qué tan ambiciosa sea.</p>
+        </div>
+        <div class="studio-item">
+          <h4>Pasión que se siente</h4>
+          <p>La producción audiovisual no es solo nuestro trabajo — es lo que nos mueve. Esa energía se traduce en proyectos donde lo damos todo, desde la primera reunión hasta el último corte.</p>
+        </div>
+        <div class="studio-item">
+          <h4>Marcas, amigos y camino recorrido</h4>
+          <p>Hemos trabajado con supermercados, aplicaciones, clínicas estéticas, odontólogos, artistas, políticos e influencers. Cada proyecto nos dejó no solo un portafolio más rico, sino también una relación que va mucho más allá del contrato.</p>
+        </div>
+      </div>
+      <div>
+        <div class="studio-media" style="aspect-ratio:16/10;">
+          <video autoplay muted loop playsinline poster="https://www.cromakerfilms.com/srv-produccion.jpg">
+            <source src="https://player.vimeo.com/progressive_redirect/playback/829673814/rendition/540p" type="video/mp4">
+          </video>
+        </div>
+        <div class="thumb-strip">
+          <img src="https://www.cromakerfilms.com/srv-produccion.jpg" alt="Calidad">
+          <img src="https://www.cromakerfilms.com/srv-ia.jpg" alt="IA">
+          <img src="https://www.cromakerfilms.com/srv-social.jpg" alt="Pasión">
+          <img src="https://www.cromakerfilms.com/srv-eventos.jpg" alt="Marcas">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Contacto</div>
+      <h2>¿Listo para llevar tu contenido a otro nivel?</h2>
+      <p>Cuéntanos tu idea y trabajemos juntos para crear contenido que destaque.</p>
+    </div>
+    <div class="contact-ctas">
+      <a href="https://wa.me/593967758257" class="btn-solid">Escríbenos por WhatsApp</a>
+    </div>
+    <div class="email-line"><a href="mailto:contacto@cromakerfilms.com">contacto@cromakerfilms.com</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="logo" style="font-size:18px;margin-bottom:10px;">Cromakerfilms</div>
+        <div class="foot-social">
+          <a href="https://www.instagram.com/cromakerfilms">@cromakerfilms</a>
+          <span>Guayaquil, Ecuador</span>
+        </div>
+      </div>
+      <div class="foot-links">
+        <a href="#portafolio">Portafolio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#nosotros">El Estudio</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2025 Cromakerfilms. Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/593967758257" class="whatsapp-fab" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.94 11.94 0 0 0 12.04 0C5.5 0 .2 5.3.2 11.85c0 2.09.55 4.13 1.6 5.93L0 24l6.4-1.68a11.86 11.86 0 0 0 5.64 1.43h.01c6.54 0 11.85-5.3 11.85-11.85 0-3.17-1.24-6.14-3.38-8.42zM12.05 21.4a9.5 9.5 0 0 1-4.85-1.33l-.35-.2-3.6.94.96-3.5-.23-.36a9.48 9.48 0 0 1-1.46-5.1c0-5.25 4.28-9.53 9.55-9.53 2.55 0 4.94 1 6.75 2.8a9.47 9.47 0 0 1 2.79 6.74c0 5.26-4.28 9.54-9.56 9.54zm5.24-7.14c-.29-.14-1.7-.84-1.96-.93-.26-.1-.45-.14-.64.14-.19.29-.74.93-.9 1.12-.17.19-.34.21-.63.07-.29-.14-1.22-.45-2.32-1.43-.86-.76-1.44-1.71-1.61-2-.17-.29-.02-.45.13-.6.14-.14.32-.36.48-.55.16-.19.21-.33.32-.55.1-.21.05-.4-.03-.55-.09-.14-.68-1.63-.93-2.24-.25-.6-.5-.52-.69-.53-.17-.01-.38-.01-.58-.01-.19 0-.5.07-.77.36-.26.29-1 .98-1 2.4 0 1.4 1.02 2.76 1.16 2.95.14.19 1.98 3.02 4.8 4.11 2.83 1.1 2.83.73 3.34.68.5-.05 1.7-.7 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.33z"/></svg>
+</a>
+
+<script>
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  const filters = document.querySelectorAll('.filter');
+  const cards = document.querySelectorAll('#portGrid .card');
+  filters.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filters.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.f;
+      cards.forEach(card => {
+        const cats = card.dataset.cat;
+        card.style.display = (f === 'todos' || cats.includes(f)) ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
