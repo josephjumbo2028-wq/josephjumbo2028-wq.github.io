@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cromakerfilms — Producción Audiovisual</title>
 <style>
+@import url('https://fonts.cdnfonts.com/css/open-sauce-one');
   :root{
     --bg:#0a0a0a;
     --bg-alt:#111111;
@@ -99,6 +100,8 @@
     margin-bottom:18px;
   }
   .hero h1{
+    font-family:'Open Sauce One','Helvetica Neue',Arial,sans-serif;
+    font-weight:700;
     font-size:clamp(40px,7vw,84px);
     line-height:1.02;
     margin-bottom:26px;
@@ -121,11 +124,23 @@
     font-size:12px;letter-spacing:.08em;text-transform:uppercase;
   }
 
+
+  .open-sauce-bold{
+    font-family:'Open Sauce One','Helvetica Neue',Arial,sans-serif !important;
+    font-weight:700 !important;
+  }
+
   /* SECTION HEADERS */
   .sec-head{max-width:640px;margin-bottom:60px;}
   .sec-head .eyebrow{color:var(--accent);}
   .sec-head h2{font-size:clamp(28px,4vw,42px);margin-bottom:14px;}
   .sec-head p{color:var(--text-dim);font-size:16px;max-width:520px;}
+
+
+  #portafolio .sec-head h2{
+    font-family:'Open Sauce One','Helvetica Neue',Arial,sans-serif;
+    font-weight:700;
+  }
 
   /* PORTFOLIO */
   #portafolio{background:var(--bg-alt);}
@@ -299,7 +314,7 @@
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow">Nuestro trabajo</div>
-      <h2>Nuestro trabajo habla por nosotros.</h2>
+      <h2 class="open-sauce-bold">Nuestro trabajo habla por nosotros.</h2>
       <p>Una selección de nuestros proyectos más recientes.</p>
     </div>
 
