@@ -41,7 +41,11 @@
     background:linear-gradient(to bottom, rgba(10,10,10,.85), transparent);
   }
   header.scrolled{background:rgba(10,10,10,.92);border-bottom:1px solid var(--line);}
-  .logo{font-family:Georgia,serif;font-size:20px;letter-spacing:.06em;text-transform:uppercase;}
+  .logo{
+    font-family:Georgia,serif;font-size:20px;letter-spacing:.06em;text-transform:uppercase;
+    display:flex;align-items:center;height:40px;flex:0 0 auto;
+  }
+  .logo-img{height:38px;width:auto;display:block;}
   nav{display:flex;gap:34px;font-size:13px;letter-spacing:.05em;text-transform:uppercase;}
   nav a{opacity:.8;transition:opacity .2s;}
   nav a:hover{opacity:1;}
@@ -73,6 +77,15 @@
   }
   .hero video, .hero .video-fallback{
     position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+  }
+  .hero-bg{position:absolute;inset:0;overflow:hidden;z-index:0;background:#000;}
+  .hero-bg iframe{
+    position:absolute;top:50%;left:50%;
+    width:100vw;height:56.25vw;
+    min-height:100%;min-width:177.78vh;
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+    border:0;
   }
   .hero::after{
     content:'';position:absolute;inset:0;
@@ -129,16 +142,57 @@
   }
   @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:560px){.grid{grid-template-columns:1fr;}}
-  .card{position:relative;overflow:hidden;border-radius:4px;aspect-ratio:4/5;background:#000;}
-  .card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
-  .card:hover img{transform:scale(1.06);}
+
+  .portfolio-viewport{
+    position:relative;overflow:hidden;
+    margin:0 -32px;padding:0 32px;
+    -webkit-mask-image:linear-gradient(to right, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+    mask-image:linear-gradient(to right, transparent 0, #000 64px, #000 calc(100% - 64px), transparent 100%);
+  }
+  .portfolio-track{
+    display:flex;
+    gap:20px;
+    width:max-content;
+    will-change:transform;
+    animation:portfolio-scroll 46s linear infinite;
+  }
+  .portfolio-track:hover{animation-play-state:paused;}
+  @keyframes portfolio-scroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .portfolio-track{animation:none;}
+  }
+  .card{
+    position:relative;overflow:hidden;border-radius:28px;
+    flex:0 0 auto;width:260px;aspect-ratio:4/5;background:#000;
+  }
+  @media(max-width:560px){.card{width:200px;}}
+  .card img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .7s cubic-bezier(.16,1,.3,1), filter .5s ease;
+    filter:brightness(.9);
+  }
+  .card:hover img{transform:scale(1.07);filter:brightness(.5);}
   .card-overlay{
     position:absolute;inset:0;
-    background:linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,0) 55%);
-    display:flex;flex-direction:column;justify-content:flex-end;padding:20px;
+    background:linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.15) 55%, rgba(0,0,0,0) 100%);
+    display:flex;flex-direction:column;justify-content:flex-end;padding:22px;
+    opacity:0;transition:opacity .45s cubic-bezier(.16,1,.3,1);
   }
-  .card-tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
-  .card-title{font-family:Georgia,serif;font-size:18px;}
+  .card:hover .card-overlay{opacity:1;}
+  .card-tag{
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;
+    opacity:0;transform:translateY(10px);
+    transition:opacity .4s cubic-bezier(.16,1,.3,1) .05s, transform .4s cubic-bezier(.16,1,.3,1) .05s;
+  }
+  .card-title{
+    font-family:Georgia,serif;font-size:18px;
+    opacity:0;transform:translateY(10px);
+    transition:opacity .4s cubic-bezier(.16,1,.3,1) .1s, transform .4s cubic-bezier(.16,1,.3,1) .1s;
+  }
+  .card:hover .card-tag, .card:hover .card-title{opacity:1;transform:translateY(0);}
   .more{text-align:center;margin-top:56px;}
 
   /* SERVICES */
@@ -199,7 +253,7 @@
 <body>
 
 <header id="header">
-  <a href="#" class="logo">Cromakerfilms</a>
+  <a href="#" class="logo"><img src="logo.png" alt="Logo" class="logo-img"></a>
   <nav>
     <a href="#nosotros">El Estudio</a>
     <a href="#portafolio">Portafolio</a>
@@ -212,13 +266,13 @@
 </header>
 
 <section class="hero" id="inicio">
-  <video autoplay muted loop playsinline poster="https://www.cromakerfilms.com/Supercines-IMAX-Bivi.jpg">
-    <source src="https://player.vimeo.com/progressive_redirect/playback/736659154/rendition/540p" type="video/mp4">
-  </video>
+  <div class="hero-bg">
+    <iframe src="https://player.vimeo.com/video/1207073360?background=1&autoplay=1&loop=1&muted=1&app_id=58479" title="Video de fondo Cromakerfilms" allow="autoplay; fullscreen"></iframe>
+  </div>
   <div class="hero-content">
-    <div class="eyebrow">Producción Audiovisual · Guayaquil, Ecuador</div>
-    <h1>Tu contenido a otro nivel.</h1>
-    <p>Creamos contenido audiovisual para marcas, emprendedores, artistas e instituciones que quieren destacar con una imagen profesional, creativa y memorable.</p>
+    <div class="eyebrow">Académia de Talentos · Guayaquil, Ecuador</div>
+    <h1>Formación Artística</h1>
+    <p>Técnica vocal, instrumentos musicales, bailes, dominio escénico, proyección artística y más..</p>
     <div class="hero-ctas">
       <a href="#portafolio" class="btn-solid">Ver Portafolio</a>
       <a href="#contacto" class="btn-outline">Hablemos</a>
@@ -247,20 +301,8 @@
       <button class="filter" data-f="institucionales">Institucionales</button>
     </div>
 
-    <div class="grid" id="portGrid">
-      <div class="card" data-cat="spots"><img src="https://www.cromakerfilms.com/Supercines-IMAX-Bivi.jpg" alt="Supercines x BiVi"><div class="card-overlay"><div class="card-tag">Spot</div><div class="card-title">Supercines x BiVi</div></div></div>
-      <div class="card" data-cat="reels spots"><img src="https://www.cromakerfilms.com/Campeona Carls.jpg" alt="Campeona Carls"><div class="card-overlay"><div class="card-tag">Reels · Spots</div><div class="card-title">Campeona Carls</div></div></div>
-      <div class="card" data-cat="medicos reels"><img src="https://www.cromakerfilms.com/Guias-dentales.jpg" alt="Aparatos de Ortopedia"><div class="card-overlay"><div class="card-tag">Médicos · Reels</div><div class="card-title">Aparatos de Ortopedia</div></div></div>
-      <div class="card" data-cat="reels"><img src="https://www.cromakerfilms.com/Karla-Devils.jpg" alt="Devil Wears Prada Trend"><div class="card-overlay"><div class="card-tag">Reels</div><div class="card-title">Devil Wears Prada Trend</div></div></div>
-      <div class="card" data-cat="ia reels"><img src="https://www.cromakerfilms.com/LLegar a marte portada.jpg" alt="Llegar a Marte"><div class="card-overlay"><div class="card-tag">IA · Reels</div><div class="card-title">Llegar a Marte</div></div></div>
-      <div class="card" data-cat="cortometrajes"><img src="https://www.cromakerfilms.com/Corazon-de-madre.jpg" alt="Corazón de Madre"><div class="card-overlay"><div class="card-tag">Cortometraje</div><div class="card-title">Corazón de Madre</div></div></div>
-      <div class="card" data-cat="cortometrajes"><img src="https://www.cromakerfilms.com/iAlone-portada.jpg" alt="iAlone"><div class="card-overlay"><div class="card-tag">Cortometraje</div><div class="card-title">iAlone</div></div></div>
-      <div class="card" data-cat="institucionales"><img src="https://www.cromakerfilms.com/MarcSol-Portada.jpg" alt="Distribuidora Marc Sol"><div class="card-overlay"><div class="card-tag">Institucional</div><div class="card-title">Distribuidora Marc Sol</div></div></div>
-      <div class="card" data-cat="musicales"><img src="https://www.cromakerfilms.com/3ra-Newton-Portada.jpg" alt="3ra Newton"><div class="card-overlay"><div class="card-tag">Musical</div><div class="card-title">J Malack — La 3ra de Newton</div></div></div>
-      <div class="card" data-cat="cortometrajes"><img src="https://www.cromakerfilms.com/Portada-Perdoname.jpg" alt="Perdóname"><div class="card-overlay"><div class="card-tag">Cortometraje</div><div class="card-title">Perdóname</div></div></div>
-      <div class="card" data-cat="reels"><img src="https://www.cromakerfilms.com/KAO-Clinic.jpg" alt="KAO Clinic"><div class="card-overlay"><div class="card-tag">Reels</div><div class="card-title">KAO Clinic — Diferentes rostros</div></div></div>
-      <div class="card" data-cat="ia reels"><img src="https://www.cromakerfilms.com/Wishlist-KAO.jpg" alt="Wishlist Navidad KAO"><div class="card-overlay"><div class="card-tag">IA · Reels</div><div class="card-title">Wishlist Navidad — KAO Clinic</div></div></div>
-      <div class="card" data-cat="reels spots"><img src="https://www.cromakerfilms.com/Bivi-iHop-Portada.jpg" alt="BiVi x iHop"><div class="card-overlay"><div class="card-tag">Reels · Spots</div><div class="card-title">BiVi x iHop</div></div></div>
+    <div class="portfolio-viewport">
+      <div class="portfolio-track" id="portTrack"></div>
     </div>
 
     <div class="more"><a href="#" class="btn">Ver portafolio completo</a></div>
@@ -374,7 +416,7 @@
   <div class="wrap">
     <div class="foot-top">
       <div>
-        <div class="logo" style="font-size:18px;margin-bottom:10px;">Cromakerfilms</div>
+        <div class="logo" style="height:28px;margin-bottom:10px;"><img src="logo.png" alt="Logo" class="logo-img" style="height:28px;"></div>
         <div class="foot-social">
           <a href="https://www.instagram.com/cromakerfilms">@cromakerfilms</a>
           <span>Guayaquil, Ecuador</span>
@@ -402,17 +444,42 @@
     header.classList.toggle('scrolled', window.scrollY > 40);
   });
 
+  const portfolioItems = [
+    {src:'https://www.cromakerfilms.com/Supercines-IMAX-Bivi.jpg', tag:'Spot', title:'Supercines x BiVi', cats:['spots']},
+    {src:'https://www.cromakerfilms.com/Campeona Carls.jpg', tag:'Reels · Spots', title:'Campeona Carls', cats:['reels','spots']},
+    {src:'https://www.cromakerfilms.com/Guias-dentales.jpg', tag:'Médicos · Reels', title:'Aparatos de Ortopedia', cats:['medicos','reels']},
+    {src:'https://www.cromakerfilms.com/Karla-Devils.jpg', tag:'Reels', title:'Devil Wears Prada Trend', cats:['reels']},
+    {src:'https://www.cromakerfilms.com/LLegar a marte portada.jpg', tag:'IA · Reels', title:'Llegar a Marte', cats:['ia','reels']},
+    {src:'https://www.cromakerfilms.com/Corazon-de-madre.jpg', tag:'Cortometraje', title:'Corazón de Madre', cats:['cortometrajes']},
+    {src:'https://www.cromakerfilms.com/iAlone-portada.jpg', tag:'Cortometraje', title:'iAlone', cats:['cortometrajes']},
+    {src:'https://www.cromakerfilms.com/MarcSol-Portada.jpg', tag:'Institucional', title:'Distribuidora Marc Sol', cats:['institucionales']},
+    {src:'https://www.cromakerfilms.com/3ra-Newton-Portada.jpg', tag:'Musical', title:'J Malack — La 3ra de Newton', cats:['musicales']},
+    {src:'https://www.cromakerfilms.com/Portada-Perdoname.jpg', tag:'Cortometraje', title:'Perdóname', cats:['cortometrajes']},
+    {src:'https://www.cromakerfilms.com/KAO-Clinic.jpg', tag:'Reels', title:'KAO Clinic — Diferentes rostros', cats:['reels']},
+    {src:'https://www.cromakerfilms.com/Wishlist-KAO.jpg', tag:'IA · Reels', title:'Wishlist Navidad — KAO Clinic', cats:['ia','reels']},
+    {src:'https://www.cromakerfilms.com/Bivi-iHop-Portada.jpg', tag:'Reels · Spots', title:'BiVi x iHop', cats:['reels','spots']}
+  ];
+
+  function cardHTML(item){
+    return '<div class="card"><img src="' + item.src + '" alt="' + item.title + '" loading="lazy">' +
+      '<div class="card-overlay"><div class="card-tag">' + item.tag + '</div><div class="card-title">' + item.title + '</div></div></div>';
+  }
+
+  function renderTrack(filter){
+    const track = document.getElementById('portTrack');
+    const filtered = filter === 'todos' ? portfolioItems : portfolioItems.filter(i => i.cats.includes(filter));
+    const html = filtered.map(cardHTML).join('');
+    track.innerHTML = html + html;
+  }
+
+  renderTrack('todos');
+
   const filters = document.querySelectorAll('.filter');
-  const cards = document.querySelectorAll('#portGrid .card');
   filters.forEach(btn => {
     btn.addEventListener('click', () => {
       filters.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const f = btn.dataset.f;
-      cards.forEach(card => {
-        const cats = card.dataset.cat;
-        card.style.display = (f === 'todos' || cats.includes(f)) ? '' : 'none';
-      });
+      renderTrack(btn.dataset.f);
     });
   });
 </script>
